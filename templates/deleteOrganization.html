@@ -1,0 +1,39 @@
+{% extends "main.html" %}
+{% block body %}
+
+
+<header>
+  <nav class="navbar navbar-light bg-white">
+    <a class="navbar-brand m-auto" href="{{url_for('index')}}">
+      achaONG
+    </a>
+  </nav>
+</header>
+
+
+<main>
+
+  <section class="container-fluid crud-organization-container bg-light">
+
+    <div class="headline text-center mb-4">
+      <h4 class="d-block">
+        <span class="text-danger">Deletar</span>
+        <b>{{o.name}}</b>
+      </h4>
+      <p class="d-block">Você tem certeza disso? Uma vez deletado não será possível recuperar os dados da Organização.</p>
+    </div>
+
+    <form class="needs-validation p-5 m-auto bg-white border rounded" action="#" method = 'POST'>
+      <div class="form-group text-center">
+        <input class="btn btn-danger" type="submit" value="Deletar">
+        <a class="btn btn-secondary" href="{{url_for('showOrganizationDetail', organization_id = o.id)}}" role="button">Cancelar</a>
+      </div>
+    </form>
+
+  </section>
+
+</main>
+
+
+{% include "footer.html" %}
+{% endblock %}
