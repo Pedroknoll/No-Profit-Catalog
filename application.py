@@ -1,10 +1,25 @@
 #!/usr/bin/python
-from flask import Flask
+from flask import Flask, render_template, url_for, request, redirect
+
+# importing SqlAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
+from sqlalchemy.orm import sessionmaker
+from database_setup import (Base, Category, Organization, DATABASE)
 
 # app configuration
 app = Flask(__name__)
 
+# Bind the engine to the metadata of the Base class so that the
+# declaratives can be accessed through a DBSession instance
+engine = create_engine(URL(**DATABASE))
+Base.metadata.bind = engine
 
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+
+# App routes
 # Show homepage
 @app.route('/')
 def index():

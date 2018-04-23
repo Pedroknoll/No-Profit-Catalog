@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import (Base, Category, Organization, DATABASE)
+from models import (Base, Category, Organization, DATABASE)
 
 engine = create_engine(URL(**DATABASE))
 Base.metadata.bind = engine
