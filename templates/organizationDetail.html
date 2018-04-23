@@ -1,0 +1,80 @@
+{% extends "main.html" %}
+{% block body %}
+{% include "header.html" %}
+<main>
+
+  <div class="container org-detail-container">
+
+    <section class="admin-functions">
+      <ul class="nav row justify-content-end border-bottom py-3">
+        <li class="nav-item">
+          <a class="btn btn-outline-warning" href="#" role="button">Editar</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-danger ml-md-2" href="#" role="button">Deletar</a>
+        </li>
+      </ul>
+    </section>
+
+
+    <section class="row breadcum py-2 small">
+      <nav aria-label="breadcrumb" itemprop="breadcrumb">
+        <ol class="breadcrumb m-0 bg-white">
+          <li class="breadcrumb-item text-uppercase">
+            <a class="text-muted" href="{{url_for('index')}}">home</a>
+          </li>
+          <li class="breadcrumb-item text-uppercase">
+            <a class="text-muted" href="{{url_for('showOrganizationsList')}}">organizações</a>
+          </li>
+          <li class="breadcrumb-item text-uppercase active" aria-current="page">{{organization.name}}</li>
+        </ol>
+      </nav>
+    </section>
+
+
+    <section class="row header-image">
+      <div class="col-12 organization-cover--image border" style="height:315px"></div>
+    </section>
+
+
+    <section class="row organization-content pt-3 pb-5 px-5">
+
+      <div class="col-12 col-lg-8">
+        <div class="org-general-info py-3 my-3 border-bottom">
+          <h3>{{organization.name}}</h3>
+          <h4>A instituição</h4>
+          <p>{{organization.description}}</p>
+        </div>
+
+        <div class="org-details-info py-3 my-3">
+          <h4>Detalhes</h4>
+          <div class="org-details-item d-flex">
+            <i class="material-icons">web</i>
+            <a href="" class="ml-2">{{organization.site}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+
+        <div class="org-profile">
+          <div class="d-flex org-profile--image">
+            <img class="w-100 border p-1 bg-white border-bottom-0 rounded-top" style="height:210px">
+          </div>
+
+          <div class="org-profile--ctr p-3 bg-white border">
+            <p class="py-3 border-bottom"> Ajude a <b>{{organization.name}}</b> e contribua com a causa de <b>{{category.name}}</b></p>
+            <button type="button" class="btn btn-dark btn-lg btn-block mb-3 border">Doar</button>
+            <button type="button" class="btn btn-light btn-lg btn-block border">Ser voluntário</button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+{% include "footer.html" %}
+{% endblock %}
