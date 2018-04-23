@@ -122,9 +122,21 @@ def editOrganization(organization_id):
 
 
 # Delete organization
-@app.route('/organization/<int:organization_id>/delete')
+@app.route("/organization/<int:organization_id>/delete",
+            methods=['GET', 'POST'])
 def deleteOrganization(organization_id):
-    return "Delete organization"
+    organizationToDelete = session.query(Organization).\
+                            filter_by(id=organization_id).\
+                            one()
+
+    """Delete organization from the database"""
+    if request.method == 'POST':
+        session.delete(organizationToDelete)
+        session.commit()
+        return redirect(url_for('showOrganizationsList'))
+    else:
+        return render_template('deleteOrganization.html',
+                                    o = organizationToDelete)
 
 
 if __name__ == "__main__":
