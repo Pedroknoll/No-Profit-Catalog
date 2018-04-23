@@ -1,0 +1,70 @@
+{% extends "main.html" %}
+{% block body %}
+{% include "header.html" %}
+<main>
+
+
+  <section class="container-fluid category-selection-section">
+    <div class="container category-selection-area py-5">
+      <div class="d-flex flex-row align-items-center">
+        <span>Me mostre projetos da causa de</span>
+
+        <div class="dropdown ml-2">
+          <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <b class="text-info">Todas</b>
+          </button>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for category in categories %}
+              <a class="dropdown-item" href="{{url_for('showCategoryOrganizations', category_id=category.id)}}">{{category.name}}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <section class="container organizations-list-section py-4">
+
+    <div class="row breadcum py-2 small">
+      <nav aria-label="breadcrumb" itemprop="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+          <li class="breadcrumb-item text-uppercase">
+            <a class="text-muted" href="{{url_for('index')}}">home</a>
+          </li>
+          <li class="breadcrumb-item text-uppercase active" aria-current="page">organizações</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="d-flex flex-row">
+      <h5 class="filter-counter">
+        <span>Descubra</span>
+        <b> {{filter_count}} organizações</b>
+      </h5>
+    </div>
+
+    <div class="d-flex flex-row flex-wrap pt-3 pb-5">
+    {% for organization in organizations %}
+        <div class="card-deck col-12 col-md-4 mt-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{organization.name}}</h5>
+              <p class="card-text">{{organization.description}}</p>
+            </div>
+            <div class="card-footer bg-transparent text-right">
+              <a href="{{url_for('showOrganizationDetail', organization_id=organization.id)}}" class="card-link text-muted">ver detalhes</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+
+  </section>
+
+
+</main>
+{% include "footer.html" %}
+{% endblock %}
