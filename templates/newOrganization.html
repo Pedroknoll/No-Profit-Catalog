@@ -1,0 +1,63 @@
+{% extends "main.html" %}
+{% block body %}
+
+<header>
+  <nav class="navbar navbar-light bg-white">
+    <a class="navbar-brand m-auto" href="{{url_for('index')}}">MOVEMOS</a>
+  </nav>
+</header>
+
+
+<main>
+
+
+  <section class="container-fluid crud-organization-container bg-light">
+
+    <div class="headline text-center mb-4">
+      <h4 class="d-block">Cadastre sua Organização</h4>
+      <p class="d-block">Mostre sua organização para potenciais doadores e voluntários.</p>
+    </div>
+
+    <form class="needs-validation p-5 m-auto bg-white border rounded" action="{{url_for('newOrganization')}}" method = 'POST' enctype='multipart/form-data'  novalidate>
+
+      <div class="form-group">
+        <label for="name">Nome da Organização*</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+        <div class="invalid-feedback">Informe o nome da organização</div>
+      </div>
+
+      <div class="form-group">
+        <label for="site">Site da Organização</label>
+        <input type="url" pattern="https?://.+" class="form-control" id="site" name="site" placeholder="ex: http://example.com">
+        <div class="invalid-feedback">Informe a url no formato completo (http://...)</div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição da Organização*</label>
+        <textarea class="form-control" maxlength="500"  id="description" name="description" rows="3" required></textarea>
+        <div class="invalid-feedback">Informe a descrição da organização</div>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Causa da Organização*</label>
+        <select class="form-control" id="category" name="category" required>
+            <option value= "" selected >Selecione uma opção</option>
+          {% for category in categories %}
+            <option value="{{category.id}}">{{category.name}}</option>
+          {% endfor %}
+        </select>
+        <div class="invalid-feedback">Selecione uma opção válida</div>
+      </div>
+
+      <button type="submit" class="btn btn-info float-right">Criar Organização</button>
+      <div style="clear: both;"></div>
+
+    </form>
+
+  </section>
+
+
+</main>
+{% include "footer.html" %}
+<script type='text/javascript' src="{{url_for('static', filename='form_validator.js') }}"></script>
+{% endblock %}
