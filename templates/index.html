@@ -1,0 +1,65 @@
+{% extends "main.html" %}
+{% block body %}
+{% include "header.html" %}
+<main>
+
+
+  <section class="d-flex flex-column justify-content-center hero-image hero-overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h1 class="font-weight-bold text-white text-center py-1">Fazer o bem ficou mais fácil</h1>
+          <h4 class="text-white text-center">Encontre ONGs e contribua para uma causa</h4>
+          <div class="text-center py-4">
+            <a href="{{url_for('showOrganizationsList')}}" class="btn btn-primary btn-warning btn-lg text-white">Explorar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="why bg-light">
+    <div class="container d-flex flex-row justify-content-around">
+      <div class="why-item first col-3 text-center p-4 rounded bg-white border">
+        <i class="material-icons">search</i>
+        <p class="why-item-descripion mt-3">Encontre organizações ligadas a causas que te tocam</p>
+      </div>
+
+      <div class="why-item second col-3 text-center p-4 rounded bg-white border">
+        <i class="material-icons heart-icon">favorite_border</i>
+        <p class="why-item-descripion mt-3">Contribua com doações ou voluntariado</p>
+      </div>
+
+      <div class="why-item third col-3 text-center p-4 rounded bg-white border">
+        <i class="material-icons">share</i>
+        <p class="why-item-descripion mt-3">Compartilhe e espalhe o bem para sua rede de conexões</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="category-collection">
+    <div class="container">
+      <div class="category-collection-header text-center">
+        <h4>Pesquisas rápidas</h4>
+        <p> Descubra organizações pelas causas em que atuam</p>
+      </div>
+
+      <div class="category-collection-group d-flex flex-wrap justify-content-around p-5 mt-5 rounded border">
+        {% for category in categories %}
+        <div class="category-collection-item d-flex flex-column justify-content-center col-12 col-md-3 col-lg-2 text-center">
+          <i class="material-icons" style="font-size:30px;">share</i>
+          <span class="category-collection-item"><a class="text-dark" href="#">{{category.name}}</a></span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <a class="float-right my-3 text-secondary" href="{{url_for('showOrganizationsList')}}">ver mais categorias</a>
+    </div>
+  </section>
+
+
+</main>
+{% include "footer.html" %}
+{% endblock %}

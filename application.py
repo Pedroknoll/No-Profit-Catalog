@@ -5,7 +5,7 @@ from flask import Flask, render_template, url_for, request, redirect
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
-from database_setup import (Base, Category, Organization, DATABASE)
+from models import (Base, Category, Organization, DATABASE)
 
 # app configuration
 app = Flask(__name__)
@@ -23,7 +23,8 @@ session = DBSession()
 # Show homepage
 @app.route('/')
 def index():
-  return 'Hello World'
+  categories = session.query(Category).limit(5).all()
+  return render_template('index.html', categories = categories)
 
 
 # Show organizations list page
@@ -40,7 +41,7 @@ def showOrganizationDetail(organization_id):
 
 # Add organization
 @app.route('/organization/new')
-def addOrganization():
+def newOrganization():
     return 'Add organization'
 
 
