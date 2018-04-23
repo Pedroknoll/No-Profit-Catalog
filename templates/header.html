@@ -1,0 +1,28 @@
+<header class="d-flex flex-row justify-content-around top-menu border-bottom">
+
+  <nav class="navbar navbar-expand-lg navbar-light col-10 py-3">
+
+    <a class="navbar-brand" href="{{url_for('index')}}">achaONG</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse .d-md-flex justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item px-3">
+          <a class="nav-link" href="{{url_for('newOrganization')}}">Cadastre sua ONG</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="{{url_for('showOrganizationsList')}}">Explore</a>
+        </li>
+        <li class="nav-item px-3">
+          <form class="form-inline">
+            <button class="btn btn-md btn-outline-dark" type="button">Entrar</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+
+</header>
