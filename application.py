@@ -73,7 +73,7 @@ def showOrganizationDetail(organization_id):
 
 
 # Add organization
-@app.route('/organization/new')
+@app.route('/organization/new', methods=['GET', 'POST'])
 def newOrganization():
     categories = session.query(Category).all()
 
@@ -92,9 +92,33 @@ def newOrganization():
 
 
 # Edit organization
-@app.route('/organization/<int:organization_id>/edit')
+@app.route("/organization/<int:organization_id>/edit",
+            methods=['GET', 'POST'])
 def editOrganization(organization_id):
-    return "Edit organization"
+    categories = session.query(Category).all()
+    editedOrganization = session.query(Organization).\
+                            filter_by(id=organization_id).\
+                            one()
+
+    """Save edited organization to the database"""
+    if request.method == 'POST':
+        if request.form['name']:
+            editedOrganization.name = request.form['name']
+        if request.form['site']:
+            editedOrganization.site = request.form['site']
+        if request.form['description']:
+            editedOrganization.description = request.form['description']
+        if request.form['category']:
+            editedOrganization.category_id = request.form[ 'category']
+        session.add(editedOrganization)
+        session.commit()
+        return redirect(url_for('showOrganizationDetail',
+                                    organization_id=organization_id))
+    else:
+        return render_template('editOrganization.html',
+                                    categories = categories,
+                                    organization_id = organization_id,
+                                    o = editedOrganization)
 
 
 # Delete organization
