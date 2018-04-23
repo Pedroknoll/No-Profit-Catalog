@@ -30,7 +30,32 @@ def index():
 # Show organizations list page
 @app.route('/organizations')
 def showOrganizationsList():
-    return 'Show all the organizations'
+    categories = session.query(Category).all()
+    organizations = session.query(Organization).all()
+    filter_count = session.query(Organization).count()
+    return render_template('organizationsList.html',
+                                categories = categories,
+                                organizations = organizations,
+                                filter_count = filter_count)
+
+
+# Show all organizations in a specific category
+@app.route('/organizations/category/<int:category_id>')
+def showCategoryOrganizations(category_id):
+    categories = session.query(Category).order_by(Category.name)
+    chosen_category = session.query(Category).\
+                        filter_by(id=category_id).\
+                        one()
+    organizations = session.query(Organization).\
+                        filter_by(category_id=chosen_category.id)
+    filter_count = session.query(Organization).\
+                        filter_by(category_id=chosen_category.id).\
+                        count()
+    return render_template('filterResults.html',
+                                categories = categories,
+                                chosen_category = chosen_category,
+                                organizations = organizations,
+                                filter_count = filter_count)
 
 
 # Show organization detail
