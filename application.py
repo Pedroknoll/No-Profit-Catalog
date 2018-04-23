@@ -75,7 +75,20 @@ def showOrganizationDetail(organization_id):
 # Add organization
 @app.route('/organization/new')
 def newOrganization():
-    return 'Add organization'
+    categories = session.query(Category).all()
+
+    if request.method == 'POST':
+        addNewOrg = Organization(
+                    name = request.form['name'],
+                    description = request.form['description'],
+                    site = request.form['site'],
+                    category_id = request.form['category'])
+        session.add(addNewOrg)
+        session.commit()
+        return redirect(url_for('showOrganizationsList'))
+    else:
+        return render_template('newOrganization.html',
+                                    categories = categories)
 
 
 # Edit organization
