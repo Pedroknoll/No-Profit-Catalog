@@ -61,7 +61,15 @@ def showCategoryOrganizations(category_id):
 # Show organization detail
 @app.route('/organization/<int:organization_id>')
 def showOrganizationDetail(organization_id):
-    return 'Show organization details'
+    organization = session.query(Organization).\
+                        filter_by(id=organization_id).\
+                        one()
+    category = session.query(Category).\
+                    filter_by(id=organization.category_id).\
+                    one()
+    return render_template('organizationDetail.html',
+                                organization = organization,
+                                category = category)
 
 
 # Add organization
