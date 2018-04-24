@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 
 # importing SqlAlchemy
 from sqlalchemy import create_engine
@@ -19,6 +19,18 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@app.route('/organizations/JSON')
+def showOrganizationsListJSON():
+    organizations = session.query(Organization).all()
+    return jsonify(Organizations=[org.serialize for org in organizations])
+
+
+@app.route('/organization/<int:organization_id>/JSON')
+def showOrganizationDetailJSON(organization_id):
+    organization = session.query(Organization).\
+                        filter_by(id=organization_id).\
+                        one()
+    return jsonify(Organization=organization.serialize)
 
 # App routes
 # Show homepage
@@ -145,5 +157,6 @@ def deleteOrganization(organization_id):
 
 if __name__ == "__main__":
     app.secret_key = 'super_secret_key'
+    app.config['JSON_AS_ASCII'] = False
     app.debug = True
     app.run(host = '0.0.0.0', port = 5000)
