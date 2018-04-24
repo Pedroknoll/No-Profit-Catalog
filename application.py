@@ -1,5 +1,6 @@
 #!/usr/bin/python
-from flask import Flask, render_template, url_for, request, redirect
+# -*- encoding: utf-8 -*-
+from flask import Flask, render_template, url_for, request, redirect, flash
 
 # importing SqlAlchemy
 from sqlalchemy import create_engine
@@ -85,6 +86,7 @@ def newOrganization():
                     category_id = request.form['category'])
         session.add(addNewOrg)
         session.commit()
+        flash("Organização criada com sucesso!".decode('utf8'))
         return redirect(url_for('showOrganizationsList'))
     else:
         return render_template('newOrganization.html',
@@ -112,6 +114,7 @@ def editOrganization(organization_id):
             editedOrganization.category_id = request.form[ 'category']
         session.add(editedOrganization)
         session.commit()
+        flash("Organização editada com sucesso!".decode('utf8'))
         return redirect(url_for('showOrganizationDetail',
                                     organization_id=organization_id))
     else:
@@ -133,6 +136,7 @@ def deleteOrganization(organization_id):
     if request.method == 'POST':
         session.delete(organizationToDelete)
         session.commit()
+        flash("Organização deletada com sucesso!".decode('utf8'))
         return redirect(url_for('showOrganizationsList'))
     else:
         return render_template('deleteOrganization.html',
@@ -140,5 +144,6 @@ def deleteOrganization(organization_id):
 
 
 if __name__ == "__main__":
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 5000)
