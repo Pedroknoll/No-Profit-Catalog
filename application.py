@@ -253,90 +253,109 @@ def showOrganizationDetail(organization_id):
     organization = session.query(Organization).\
                         filter_by(id=organization_id).\
                         one()
+    creator = getUserInfo(organization.user_id)
     category = session.query(Category).\
                     filter_by(id=organization.category_id).\
                     one()
-    return render_template('organizationDetail.html',
-                                organization = organization,
-                                category = category)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('organizationDetail.html',
+                                    organization = organization,
+                                    category = category)
+    else:
+        return render_template('organizationDetail.html',
+                                    organization = organization,
+                                    category = category,
+                                    logged_and_creator = True)
 
 
 # Add organization
 @app.route('/organization/new', methods=['GET', 'POST'])
 def newOrganization():
-    categories = session.query(Category).all()
-
     if 'username' not in login_session:
         flash("Você precisa estar logado para cadastrar uma Organização".decode('utf8'))
         return redirect(url_for('showLogin'))
-    if request.method == 'POST':
-        addNewOrg = Organization(
-                    name = request.form['name'],
-                    description = request.form['description'],
-                    site = request.form['site'],
-                    category_id = request.form['category'],
-                    user_id=login_session['user_id'])
-        session.add(addNewOrg)
-        session.commit()
-        flash("Organização criada com sucesso!".decode('utf8'))
-        return redirect(url_for('showOrganizationsList'))
     else:
-        return render_template('newOrganization.html',
-                                    categories = categories)
+        categories = session.query(Category).all()
+        if request.method == 'POST':
+            addNewOrg = Organization(
+                        name = request.form['name'],
+                        description = request.form['description'],
+                        site = request.form['site'],
+                        category_id = request.form['category'],
+                        user_id=login_session['user_id'])
+            session.add(addNewOrg)
+            session.commit()
+            flash("Organização criada com sucesso!".decode('utf8'))
+            return redirect(url_for('showOrganizationsList'))
+        else:
+            return render_template('newOrganization.html',
+                                        categories = categories)
 
 
 # Edit organization
 @app.route("/organization/<int:organization_id>/edit",
             methods=['GET', 'POST'])
 def editOrganization(organization_id):
-    categories = session.query(Category).all()
-    editedOrganization = session.query(Organization).\
-                            filter_by(id=organization_id).\
-                            one()
-
-    """Save edited organization to the database"""
     if 'username' not in login_session:
+        flash("Você precisa estar logado para editar uma Organização".decode('utf8'))
         return redirect(url_for('showLogin'))
-    if request.method == 'POST':
-        if request.form['name']:
-            editedOrganization.name = request.form['name']
-        if request.form['site']:
-            editedOrganization.site = request.form['site']
-        if request.form['description']:
-            editedOrganization.description = request.form['description']
-        if request.form['category']:
-            editedOrganization.category_id = request.form[ 'category']
-        session.add(editedOrganization)
-        session.commit()
-        flash("Organização editada com sucesso!".decode('utf8'))
-        return redirect(url_for('showOrganizationDetail',
-                                    organization_id=organization_id))
     else:
-        return render_template('editOrganization.html',
-                                    categories = categories,
-                                    organization_id = organization_id,
-                                    o = editedOrganization)
+        """Save edited organization to the database"""
+        categories = session.query(Category).all()
+        editedOrganization = session.query(Organization).\
+                                filter_by(id=organization_id).\
+                                one()
+        if editedOrganization.user_id == login_session['user_id'] and \
+            request.method == 'POST':
+            if request.form['name']:
+                editedOrganization.name = request.form['name']
+            if request.form['site']:
+                editedOrganization.site = request.form['site']
+            if request.form['description']:
+                editedOrganization.description = request.form['description']
+            if request.form['category']:
+                editedOrganization.category_id = request.form[ 'category']
+            session.add(editedOrganization)
+            session.commit()
+            flash("Organização editada com sucesso!".decode('utf8'))
+            return redirect(url_for('showOrganizationDetail',
+                                        organization_id=organization_id))
+        elif editedOrganization.user_id == login_session['user_id'] :
+            return render_template('editOrganization.html',
+                                        categories = categories,
+                                        organization_id = organization_id,
+                                        o = editedOrganization)
+        else:
+            flash("Você não é o criador desta página e não está autorizado à editá-la".decode('utf8'))
+            return redirect(url_for('showOrganizationDetail',
+                                        organization_id=organization_id))
 
 
 # Delete organization
 @app.route("/organization/<int:organization_id>/delete",
             methods=['GET', 'POST'])
 def deleteOrganization(organization_id):
-    organizationToDelete = session.query(Organization).\
-                            filter_by(id=organization_id).\
-                            one()
-
-    """Delete organization from the database"""
     if 'username' not in login_session:
+        flash("Você precisa estar logado para deletar uma Organização".decode('utf8'))
         return redirect(url_for('showLogin'))
-    if request.method == 'POST':
-        session.delete(organizationToDelete)
-        session.commit()
-        flash("Organização deletada com sucesso!".decode('utf8'))
-        return redirect(url_for('showOrganizationsList'))
     else:
-        return render_template('deleteOrganization.html',
-                                    o = organizationToDelete)
+        """Delete organization from the database"""
+        organizationToDelete = session.query(Organization).\
+                                filter_by(id=organization_id).\
+                                one()
+        if organizationToDelete.user_id == login_session['user_id'] and \
+            request.method == 'POST':
+            session.delete(organizationToDelete)
+            session.commit()
+            flash("Organização deletada com sucesso!".decode('utf8'))
+            return redirect(url_for('showOrganizationsList'))
+        elif organizationToDelete.user_id == login_session['user_id']:
+            return render_template('deleteOrganization.html',
+                                        o = organizationToDelete)
+        else:
+            flash("Você não é o criador desta página e não está autorizado à deletá-la".decode('utf8'))
+            return redirect(url_for('showOrganizationDetail',
+                                        organization_id=organization_id))
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@
 
   <div class="container org-detail-container">
 
+    {% if logged_and_creator %}
     <section class="admin-functions">
       <ul class="nav row justify-content-end border-bottom py-3">
         <li class="nav-item">
@@ -15,10 +16,11 @@
         </li>
       </ul>
     </section>
+    {% endif %}
 
     {% include "flashmessage.html" %}
 
-    <section class="row breadcum py-2 small">
+    <section class="row breadcum pt-4 pb-2 small">
       <nav aria-label="breadcrumb" itemprop="breadcrumb">
         <ol class="breadcrumb m-0 bg-white">
           <li class="breadcrumb-item text-uppercase">
