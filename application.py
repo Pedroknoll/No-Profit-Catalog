@@ -127,7 +127,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("Sucesso! Você está logado como {}".format(login_session['username']).decode('utf8'))
     print "done!"
     return output
 
@@ -238,6 +238,7 @@ def newOrganization():
     categories = session.query(Category).all()
 
     if 'username' not in login_session:
+        flash("Você precisa estar logado para cadastrar uma Organização".decode('utf8'))
         return redirect(url_for('showLogin'))
     if request.method == 'POST':
         addNewOrg = Organization(
