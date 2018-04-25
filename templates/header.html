@@ -17,7 +17,22 @@
         </li>
         <li class="nav-item px-3">
           <form class="form-inline">
-            <a class="btn btn-md btn-outline-dark" href="{{url_for('showLogin')}}" role="button">Entrar</a>
+            {%if 'username' not in session %}
+              <a class="btn btn-md btn-outline-dark" href="{{url_for('showLogin')}}" role="button">Entrar</a>
+            {% else %}
+              <div class="btn-group">
+                <button type="button" class="btn btn-md bg-white border-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Olá, Fulano
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{{url_for('gdisconnect')}}">Logout</a>
+                </div>
+              </div>
+            {% endif %}
           </form>
         </li>
       </ul>
