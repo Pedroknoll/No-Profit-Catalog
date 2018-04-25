@@ -17,7 +17,7 @@ import requests
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
-from models import (Base, Category, Organization, DATABASE)
+from models import (Base, User, Category, Organization, DATABASE)
 
 # app configuration
 app = Flask(__name__)
@@ -120,6 +120,12 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # see if user exists, if it doesn't make a new one
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -130,6 +136,29 @@ def gconnect():
     flash("Sucesso! Você está logado como {}".format(login_session['username']).decode('utf8'))
     print "done!"
     return output
+
+
+# User Helper Functions
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 
 # DISCONNECT - Revoke a current user's token and reset their login_session
@@ -245,7 +274,8 @@ def newOrganization():
                     name = request.form['name'],
                     description = request.form['description'],
                     site = request.form['site'],
-                    category_id = request.form['category'])
+                    category_id = request.form['category'],
+                    user_id=login_session['user_id'])
         session.add(addNewOrg)
         session.commit()
         flash("Organização criada com sucesso!".decode('utf8'))

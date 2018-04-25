@@ -12,12 +12,18 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
 
-from models import (Base, Category, Organization, DATABASE)
+from models import (Base, User, Category, Organization, DATABASE)
 
 engine = create_engine(URL(**DATABASE))
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+# Create a user
+User1 = User(name="Robot Machine", email="robot.machine@gmail.com",
+             picture='https://pbs.twimg.com/profile_images/2671170543/18debd694829ed78203a5a36dd364160_400x400.png')
+session.add(User1)
+session.commit()
 
 # Create some test Category objects
 cat1 = Category(name="educação")
@@ -68,7 +74,8 @@ organization1 = Organization(name="Associação Brazil Foundation",
                             apoiadores para promover igualdade, justiça social
                             e oportunidade para todos os brasileiros"""),
              site="www.brazilfoundation.org",
-             category_id=cat5.id)
+             category_id=cat5.id,
+             user_id=1)
 session.add(organization1)
 session.commit()
 
@@ -80,7 +87,8 @@ organization2 = Organization(name="ChildFund Brasil",
                             enriquecer a vida dos apoiadores por meio
                             da defesa a nossa causa"""),
              site="www.childfundbrasil.org.br",
-             category_id=cat4.id)
+             category_id=cat4.id,
+             user_id=1)
 session.add(organization2)
 session.commit()
 
@@ -88,7 +96,8 @@ organization3 = Organization(name="Fundação Estudar",
              description=("""Criar oportunidades para gente boa sonhar grande
                             e transformar o Brasil"""),
              site="www.estudar.org.br",
-             category_id=cat1.id)
+             category_id=cat1.id,
+             user_id=1)
 session.add(organization3)
 session.commit()
 
@@ -99,7 +108,8 @@ organization4 = Organization(name="Instituto do Câncer Infantil",
                             social, visando à melhoria da qualidade de vida
                             e dignidade aos pacientes e seus familiares"""),
              site="www.ici-rs.org.br",
-             category_id=cat2.id)
+             category_id=cat2.id,
+             user_id=1)
 session.add(organization4)
 session.commit()
 
@@ -108,14 +118,16 @@ organization5 = Organization(name="Instituto Socioambiental",
                             os direitos coletivos e difusos e valorizem
                             a diversidade socioambiental"""),
              site="www.socioambiental.org",
-             category_id=cat3.id)
+             category_id=cat3.id,
+             user_id=1)
 session.add(organization5)
 session.commit()
 
 organization6 = Organization(name="S.O.S Mata Atlântica",
              description=("Inspirar a sociedade na defesa da Mata Atlântica"),
              site="www.sosma.org.br",
-             category_id=cat3.id)
+             category_id=cat3.id,
+             user_id=1)
 session.add(organization6)
 session.commit()
 
@@ -126,7 +138,8 @@ organization7 = Organization(name="Um Teto para o Meu País",
                             moradoras, jovens voluntários e voluntárias
                             e outros atores"""),
              site="www.teto.org.br",
-             category_id=cat5.id)
+             category_id=cat5.id,
+             user_id=1)
 session.add(organization7)
 session.commit()
 
@@ -136,7 +149,8 @@ organization8 = Organization(name=("""Associação Brasileira de Linfoma
                             todas as pessoas com câncer do sangue no Brasil
                             tenham acesso ao melhor tratamento"""),
              site="www.abrale.org.br",
-             category_id=cat2.id)
+             category_id=cat2.id,
+             user_id=1)
 session.add(organization8)
 session.commit()
 
@@ -146,7 +160,8 @@ organization9 = Organization(name="Amigos do Bem",
                             por meio de ações educacionais e projetos
                             autossustentáveis"""),
              site="www.amigosdobem.org",
-             category_id=cat1.id)
+             category_id=cat1.id,
+             user_id=1)
 session.add(organization9)
 session.commit()
 
@@ -156,6 +171,7 @@ organization10 = Organization(name="Asssociação Santo Agostinho",
                             oferecendo oportunidade de desenvolvimento
                             pessoal com respeito e dignidade"""),
              site="www.asa-santoagostinho.org.br",
-             category_id=cat1.id)
+             category_id=cat1.id,
+             user_id=1)
 session.add(organization10)
 session.commit()
