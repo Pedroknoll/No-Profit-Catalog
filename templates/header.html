@@ -22,7 +22,13 @@
             {% else %}
               <div class="btn-group">
                 <button type="button" class="btn btn-md bg-white border-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Olá, Fulano
+                Olá,
+                {% if " " in user.name %}
+                  {% set user_first_name = user.name.split(" ")[0] %}
+                  {{ user_first_name }}
+                {% else %}
+                  {{ user.name }}
+                {% endif %}
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">Action</a>

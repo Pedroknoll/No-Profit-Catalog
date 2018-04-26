@@ -213,7 +213,8 @@ def showOrganizationDetailJSON(organization_id):
 @app.route('/')
 def index():
   categories = session.query(Category).limit(5).all()
-  return render_template('index.html', categories = categories)
+  user = getUserInfo(login_session['user_id'])
+  return render_template('index.html', categories = categories, user = user)
 
 
 # Show organizations list page
@@ -222,10 +223,12 @@ def showOrganizationsList():
     categories = session.query(Category).all()
     organizations = session.query(Organization).all()
     filter_count = session.query(Organization).count()
+    user = getUserInfo(login_session['user_id'])
     return render_template('organizationsList.html',
                                 categories = categories,
                                 organizations = organizations,
-                                filter_count = filter_count)
+                                filter_count = filter_count,
+                                user = user)
 
 
 # Show all organizations in a specific category
@@ -240,11 +243,13 @@ def showCategoryOrganizations(category_id):
     filter_count = session.query(Organization).\
                         filter_by(category_id=chosen_category.id).\
                         count()
+    user = getUserInfo(login_session['user_id'])
     return render_template('filterResults.html',
                                 categories = categories,
                                 chosen_category = chosen_category,
                                 organizations = organizations,
-                                filter_count = filter_count)
+                                filter_count = filter_count,
+                                user = user)
 
 
 # Show organization detail
@@ -257,14 +262,17 @@ def showOrganizationDetail(organization_id):
     category = session.query(Category).\
                     filter_by(id=organization.category_id).\
                     one()
+    user = getUserInfo(login_session['user_id'])
     if 'username' not in login_session or creator.id != login_session['user_id']:
         return render_template('organizationDetail.html',
                                     organization = organization,
-                                    category = category)
+                                    category = category,
+                                    user = user)
     else:
         return render_template('organizationDetail.html',
                                     organization = organization,
                                     category = category,
+                                    user = user,
                                     logged_and_creator = True)
 
 
@@ -276,6 +284,7 @@ def newOrganization():
         return redirect(url_for('showLogin'))
     else:
         categories = session.query(Category).all()
+        user = getUserInfo(login_session['user_id'])
         if request.method == 'POST':
             addNewOrg = Organization(
                         name = request.form['name'],
@@ -306,6 +315,7 @@ def editOrganization(organization_id):
         editedOrganization = session.query(Organization).\
                                 filter_by(id=organization_id).\
                                 one()
+
         if editedOrganization.user_id == login_session['user_id'] and \
             request.method == 'POST':
             if request.form['name']:
