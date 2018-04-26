@@ -125,14 +125,8 @@ def gconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
-
     output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += 'Logando..'
     flash("Sucesso! Você está logado como {}".format(login_session['username']).decode('utf8'))
     print "done!"
     return output
@@ -186,11 +180,13 @@ def gdisconnect():
         del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        flash("Desconectado com sucesso".decode('utf8'))
+        return redirect(url_for('index'))
     else:
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
-        return response
+        flash("Falha ao revogar token para o usuário logado.".decode('utf8'))
+        return redirect(url_for('index'))
 
 
 # JSON APIs to view Organization Information
