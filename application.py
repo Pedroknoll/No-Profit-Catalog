@@ -286,7 +286,8 @@ def newOrganization():
             session.add(addNewOrg)
             session.commit()
             flash("Organização criada com sucesso!".decode('utf8'))
-            return redirect(url_for('showOrganizationsList'))
+            return redirect(url_for('showOrganizationDetail',
+                                        organization_id=addNewOrg.id))
         else:
             return render_template('newOrganization.html',
                                         categories = categories)
