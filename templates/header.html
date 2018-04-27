@@ -20,24 +20,7 @@
             {%if 'username' not in session %}
               <a class="btn btn-md btn-outline-dark" href="{{url_for('showLogin')}}" role="button">Entrar</a>
             {% else %}
-              <div class="btn-group">
-                <button type="button" class="btn btn-md bg-white border-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Olá,
-                {% if " " in user.name %}
-                  {% set user_first_name = user.name.split(" ")[0] %}
-                  {{ user_first_name }}
-                {% else %}
-                  {{ user.name }}
-                {% endif %}
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Meu perfil</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{{url_for('gdisconnect')}}">Logout</a>
-                </div>
-              </div>
+              <a class="btn btn-md btn-outline-dark" href="{{url_for('disconnect')}}" role="button">Logout</a>
             {% endif %}
           </form>
         </li>
