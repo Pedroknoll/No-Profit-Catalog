@@ -58,7 +58,6 @@ def fbconnect():
     access_token = request.data
     print "access token received {} ".format(access_token)
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
@@ -110,7 +109,8 @@ def fbconnect():
     login_session['user_id'] = user_id
     output = ''
     output += 'Logando..'
-    flash("Sucesso! Você está logado como {}".format(login_session['username']).decode('utf8'))
+    flash("Sucesso! Você está logado como {}" \
+            .format(login_session['username']).decode('utf8'))
     print "done!"
     return output
 
@@ -120,7 +120,8 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/{}/permissions?access_token={}'.format(facebook_id,access_token)
+    url = 'https://graph.facebook.com/{}/permissions?access_token={}' \
+            .format(facebook_id,access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "you have been logged out"
@@ -151,7 +152,8 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.format(access_token))
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}' \
+            .format(access_token))
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -179,8 +181,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps('Current user is already'
+                                            'connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -207,7 +209,8 @@ def gconnect():
     login_session['user_id'] = user_id
     output = ''
     output += 'Logando..'
-    flash("Sucesso! Você está logado como {}".format(login_session['username']).decode('utf8'))
+    flash("Sucesso! Você está logado como {}" \
+        .format(login_session['username']).decode('utf8'))
     print "done!"
     return output
 
@@ -222,7 +225,8 @@ def gdisconnect():
             json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(access_token)
+    url = 'https://accounts.google.com/o/oauth2/revoke?token={}' \
+        .format(access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -230,7 +234,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps('Failed to revoke'
+                                'token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -322,7 +327,8 @@ def showOrganizationDetail(organization_id):
     category = session.query(Category).\
                     filter_by(id=organization.category_id).\
                     one()
-    if 'username' not in login_session or creator.id != login_session['user_id']:
+    if ('username' not in login_session
+            or creator.id != login_session['user_id']):
         return render_template('organizationDetail.html',
                                     organization = organization,
                                     category = category)
@@ -337,7 +343,8 @@ def showOrganizationDetail(organization_id):
 @app.route('/organization/new', methods=['GET', 'POST'])
 def newOrganization():
     if 'username' not in login_session:
-        flash("Você precisa estar logado para cadastrar uma Organização".decode('utf8'))
+        flash("Você precisa estar logado para cadastrar uma Organização" \
+            .decode('utf8'))
         return redirect(url_for('showLogin'))
     else:
         categories = session.query(Category).all()
@@ -364,7 +371,8 @@ def newOrganization():
             methods=['GET', 'POST'])
 def editOrganization(organization_id):
     if 'username' not in login_session:
-        flash("Você precisa estar logado para editar uma Organização".decode('utf8'))
+        flash("Você precisa estar logado para editar uma Organização" \
+            .decode('utf8'))
         return redirect(url_for('showLogin'))
     else:
         """Save edited organization to the database"""
@@ -394,7 +402,8 @@ def editOrganization(organization_id):
                                         organization_id = organization_id,
                                         o = editedOrganization)
         else:
-            flash("Você não é o criador desta página e não está autorizado à editá-la".decode('utf8'))
+            flash("Você não é o criador desta página e não"
+                    "está autorizado à editá-la".decode('utf8'))
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=organization_id))
 
@@ -404,7 +413,8 @@ def editOrganization(organization_id):
             methods=['GET', 'POST'])
 def deleteOrganization(organization_id):
     if 'username' not in login_session:
-        flash("Você precisa estar logado para deletar uma Organização".decode('utf8'))
+        flash("Você precisa estar logado para deletar uma Organização" \
+            .decode('utf8'))
         return redirect(url_for('showLogin'))
     else:
         """Delete organization from the database"""
@@ -421,7 +431,8 @@ def deleteOrganization(organization_id):
             return render_template('deleteOrganization.html',
                                         o = organizationToDelete)
         else:
-            flash("Você não é o criador desta página e não está autorizado à deletá-la".decode('utf8'))
+            flash("Você não é o criador desta página e não"
+                    "está autorizado à deletá-la".decode('utf8'))
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=organization_id))
 
