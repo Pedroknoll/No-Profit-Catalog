@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 from flask import Flask, render_template, url_for, request, redirect, \
     flash, jsonify
@@ -56,7 +56,7 @@ def fbconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = request.data
-    print "access token received {} ".format(access_token)
+    print("access token received {} ".format(access_token))
 
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
@@ -83,8 +83,8 @@ def fbconnect():
     url = 'https://graph.facebook.com/v2.8/me?access_token={}&fields=name,id,email'.format(token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    # print "url sent for API access:{}"% url
-    # print "API JSON result: {}" % result
+    # print "url sent for API access:{}".format(url)
+    # print "API JSON result: {}".format(result)
     data = json.loads(result)
     login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
@@ -111,7 +111,7 @@ def fbconnect():
     output += 'Logando..'
     flash("Sucesso! Você está logado como {}" \
             .format(login_session['username']).decode('utf8'))
-    print "done!"
+    print("done!")
     return output
 
 # Disconnect - Revoke a current user's token and reset their login_session
@@ -174,7 +174,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
+        print("Token's client ID does not match app's.")
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -211,7 +211,7 @@ def gconnect():
     output += 'Logando..'
     flash("Sucesso! Você está logado como {}" \
         .format(login_session['username']).decode('utf8'))
-    print "done!"
+    print("done!")
     return output
 
 
