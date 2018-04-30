@@ -51,4 +51,4 @@ The website lists some no-profit organizations. The users can:
 
 
 ## License
-This project is licensed under the terms of the
+This project is licensed under the terms of the [MIT license](https://github.com/Pedroknoll/No-Profit-Catalog/blob/master/LICENSE).
