@@ -12,9 +12,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
 
-from models import (Base, User, Category, Organization, DATABASE)
+from models import (Base, User, Category, Organization)
 
-engine = create_engine(URL(**DATABASE))
+engine = create_engine('postgresql://catalog:password@localhost/catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()

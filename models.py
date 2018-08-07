@@ -11,14 +11,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
 
-DATABASE = {
-    'drivername' : 'postgresql',
-    'host' : '',
-    'port' : '5432',
-    'username' : '{}'.format(getuser()),
-    'password' : '',
-    'database' : 'noprofit'
-    }
 
 Base = declarative_base()
 
@@ -64,5 +56,5 @@ class Organization(Base):
         }
 
 
-engine = create_engine(URL(**DATABASE))
+engine = create_engine('postgresql://catalog:password@localhost/catalog')
 Base.metadata.create_all(engine)

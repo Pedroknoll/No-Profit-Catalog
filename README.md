@@ -23,9 +23,8 @@ The website lists some no-profit organizations. The users can:
 ## Configure the data
 1. Download or clone this repository to the vagrant directory: `git clone https://github.com/Pedroknoll/No-Profit-Catalog.git`
 2. Go to the repository diretory `cd achaong`
-3. Run the noprofit.sql script to create the database. For that  type `psql -f noprofit.sql`
-4. Run `python models.py` to setup the DATABASE
-5. Run `python populates_database.py` to populate the DATABASE with data samples.
+3. Run `python models.py` to setup the DATABASE
+4. Run `python populates_database.py` to populate the DATABASE with data samples.
 
 ## Configure the logins:
 ### Configure Ngrok

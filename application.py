@@ -17,7 +17,7 @@ import requests
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
-from models import (Base, User, Category, Organization, DATABASE)
+from models import (Base, User, Category, Organization)
 
 # app configuration
 app = Flask(__name__)
@@ -29,7 +29,7 @@ APPLICATION_NAME = "achaONG Application"
 
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
-engine = create_engine(URL(**DATABASE))
+engine = create_engine('postgresql://catalog:password@localhost/catalog')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
