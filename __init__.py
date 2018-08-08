@@ -5,6 +5,7 @@ from flask import Flask, render_template, url_for, request, redirect, \
 
 from flask import session as login_session
 import random, string
+import os, sys
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -22,10 +23,10 @@ from NoProfitCatalog.models import (Base, User, Category, Organization)
 # app configuration
 app = Flask(__name__)
 
-
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(os.path.join(sys.path[0], "NoProfitCatalog/client_secrets.json"), "r").read())['web']['client_id']
 APPLICATION_NAME = "achaONG Application"
+
 
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
