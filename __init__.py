@@ -111,7 +111,7 @@ def fbconnect():
     output = ''
     output += 'Logando..'
     flash("Sucesso! Você está logado como {}" \
-            .format(login_session['username']).decode('utf8'))
+            .format(login_session['username']))
     print("done!")
     return output
 
@@ -211,7 +211,7 @@ def gconnect():
     output = ''
     output += 'Logando..'
     flash("Sucesso! Você está logado como {}" \
-        .format(login_session['username']).decode('utf8'))
+        .format(login_session['username']))
     print("done!")
     return output
 
@@ -344,8 +344,7 @@ def showOrganizationDetail(organization_id):
 @app.route('/organization/new', methods=['GET', 'POST'])
 def newOrganization():
     if 'username' not in login_session:
-        flash("Você precisa estar logado para cadastrar uma Organização" \
-            .decode('utf8'))
+        flash("Você precisa estar logado para cadastrar uma Organização")
         return redirect(url_for('showLogin'))
     else:
         categories = session.query(Category).all()
@@ -359,7 +358,7 @@ def newOrganization():
                         user_id=login_session['user_id'])
             session.add(addNewOrg)
             session.commit()
-            flash("Organização criada com sucesso!".decode('utf8'))
+            flash("Organização criada com sucesso!")
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=addNewOrg.id))
         else:
@@ -372,8 +371,7 @@ def newOrganization():
             methods=['GET', 'POST'])
 def editOrganization(organization_id):
     if 'username' not in login_session:
-        flash("Você precisa estar logado para editar uma Organização" \
-            .decode('utf8'))
+        flash("Você precisa estar logado para editar uma Organização")
         return redirect(url_for('showLogin'))
     else:
         """Save edited organization to the database"""
@@ -394,7 +392,7 @@ def editOrganization(organization_id):
                 editedOrganization.category_id = request.form[ 'category']
             session.add(editedOrganization)
             session.commit()
-            flash("Organização editada com sucesso!".decode('utf8'))
+            flash("Organização editada com sucesso!")
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=organization_id))
         elif editedOrganization.user_id == login_session['user_id'] :
@@ -404,7 +402,7 @@ def editOrganization(organization_id):
                                         o = editedOrganization)
         else:
             flash("Você não é o criador desta página e não"
-                    "está autorizado à editá-la".decode('utf8'))
+                    "está autorizado à editá-la")
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=organization_id))
 
@@ -414,8 +412,7 @@ def editOrganization(organization_id):
             methods=['GET', 'POST'])
 def deleteOrganization(organization_id):
     if 'username' not in login_session:
-        flash("Você precisa estar logado para deletar uma Organização" \
-            .decode('utf8'))
+        flash("Você precisa estar logado para deletar uma Organização")
         return redirect(url_for('showLogin'))
     else:
         """Delete organization from the database"""
@@ -426,14 +423,14 @@ def deleteOrganization(organization_id):
             request.method == 'POST':
             session.delete(organizationToDelete)
             session.commit()
-            flash("Organização deletada com sucesso!".decode('utf8'))
+            flash("Organização deletada com sucesso!")
             return redirect(url_for('showOrganizationsList'))
         elif organizationToDelete.user_id == login_session['user_id']:
             return render_template('deleteOrganization.html',
                                         o = organizationToDelete)
         else:
             flash("Você não é o criador desta página e não"
-                    "está autorizado à deletá-la".decode('utf8'))
+                    "está autorizado à deletá-la")
             return redirect(url_for('showOrganizationDetail',
                                         organization_id=organization_id))
 
@@ -454,10 +451,10 @@ def disconnect():
         del login_session['picture']
         del login_session['user_id']
         del login_session['provider']
-        flash("Você foi desconectado com sucesso!".decode('utf8'))
+        flash("Você foi desconectado com sucesso!")
         return redirect(url_for('index'))
     else:
-        flash("Você não está logado!".decode('utf8'))
+        flash("Você não está logado!")
         return redirect(url_for('index'))
 
 
