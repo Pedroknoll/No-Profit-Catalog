@@ -17,7 +17,7 @@ import requests
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker
-from models import (Base, User, Category, Organization)
+from NoProfitCatalog.models import (Base, User, Category, Organization)
 
 # app configuration
 app = Flask(__name__)
